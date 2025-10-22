@@ -4,10 +4,11 @@ import customtkinter as ctk
 import subprocess as sp
 
 yt_dlp_path = "C:/Program Files/yt-dlp.exe"
-
+output_path = "%USERPROFILE%/Videos"
 # Download function
 def download(url = "yt"):
-    sp.run([yt_dlp_path, url])
+    sp.run([yt_dlp_path, url, "-P", output_path], capture_output=True)
+    
 
 
 # Window
