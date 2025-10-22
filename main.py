@@ -1,6 +1,14 @@
 from pickle import FRAME
 from typing import Text
 import customtkinter as ctk
+import subprocess as sp
+
+yt_dlp_path = "C:/Program Files/yt-dlp.exe"
+
+# Download function
+def download(url = "yt"):
+    sp.run([yt_dlp_path, url])
+
 
 # Window
 window = ctk.CTk()
@@ -17,7 +25,7 @@ url_bar = ctk.CTkEntry(master=download_area, textvariable=current_url)
 url_bar.pack()
 
 # Download button
-download_button = ctk.CTkButton(master=download_area, text="download", command=lambda: print(current_url.get()))
+download_button = ctk.CTkButton(master=download_area, text="download", command=lambda: download(url=current_url.get()))
 download_button.pack()
 
 download_area.pack()
