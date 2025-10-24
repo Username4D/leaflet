@@ -10,11 +10,13 @@ class download_handler_object:
     thread = None
     yt_dlp_path = pathlib.Path("")
     output_path = pathlib.Path("")
-    
+    progressbar = None
     
     
     def create_progress_bar(self):
-        pass
+        self.progress = ctk.DoubleVar(value=0)
+        self.progressbar = ctk.CTkProgressBar(master=self.bar_master, variable=self.progress)
+        self.progressbar.pack()
     
     def __init__(self, url, bar_master, yt_dlp_path, output_path):
         self.url = url
@@ -30,7 +32,11 @@ class download_handler_object:
         
     
     def line_to_progress(self, line):
-        print(line)
+        try:
+            return float(line[10:].split("%")[0] ) / 100
+        except:
+            print("conversion didnt work")
+            print(line)
     def download(self):
         output = sp.Popen([self.yt_dlp_path, self.url, "-P", self.output_path, "--newline", "-q", "--progress"], stdout=sp.PIPE)
         for line in output.stdout: 
