@@ -1,9 +1,8 @@
 import customtkinter as ctk
-import subprocess as sp
-import threading
 import download_handler
 import pathlib
-
+import ui.home_window
+import ui.window_background
 # Setup
 
 yt_dlp_path = pathlib.Path("C:/Program Files/yt-dlp.exe")
@@ -11,27 +10,29 @@ output_path = pathlib.Path("%USERPROFILE%/Videos")
 
 download_handlers = []
 
-def create_download_thread(url = "yt", master = None):
-    handler = download_handler.download_handler_object(url, master, yt_dlp_path, output_path)
-    download_handlers.append(handler)
-    handler.start()
-# Window
-window = ctk.CTk()
-window.geometry("200x200")
 
-# Download area
-download_area = ctk.CTkFrame(master=window)
+# App
 
-# Url bar
-current_url = ctk.StringVar(value="")
-url_bar_label = ctk.CTkLabel(master=download_area, text="URL:")
-url_bar_label.pack()
-url_bar = ctk.CTkEntry(master=download_area, textvariable=current_url)
-url_bar.pack()
+class app(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        self.geometry("200x200")
+        self.configure(fg_color = "#090909")
+        
+    def create_download_thread(self, url, master):
+        handler = download_handler.download_handler_object(url, master, yt_dlp_path, output_path, self)
+        download_handlers.append(handler)
+        handler.start()
+    def show_error(self, error=""):
+        home_window.show_error(error=error)
+    def show_success(self):
+        home_window.show_success()
+        
+app = app()
 
-# Download button
-download_button = ctk.CTkButton(master=download_area, text="download", command=lambda: create_download_thread(url=current_url.get(), master=window))
-download_button.pack()
+# Main window
+home_window = ui.home_window.home_screen(window=app)
 
-download_area.pack()
-window.mainloop()
+
+
+app.mainloop()
