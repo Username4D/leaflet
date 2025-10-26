@@ -36,3 +36,6 @@ home_window = ui.home_window.home_screen(window=app)
 
 
 app.mainloop()
+print("closed")
+for i in download_handlers:
+    i.kill()
