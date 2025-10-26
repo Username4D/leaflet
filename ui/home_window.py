@@ -1,3 +1,4 @@
+from turtle import color
 import customtkinter as ctk
 import ui.icons as icons
 
@@ -41,6 +42,14 @@ class home_screen():
         # Error:
         error_font = ctk.CTkFont(family="Calibri")
         self.error_label = ctk.CTkLabel(text="", font=error_font, master=window)
+        
+        # Settings Button:
+        settings_button = ctk.CTkButton(image=icons.settings, master=window, text = "", fg_color="transparent")
+        settings_button.grid(row = 0, column = 0, pady=40)
+        
+        # Buffer:
+        buffer = ctk.CTkFrame(master=window, width=140, height=140, fg_color="transparent")
+        buffer.grid(row = 0, column = 2)
     def show_error(self, error=""):
         self.url_bar.grid(padx = 80, column=1, row=3, sticky="ew")
         self.error_label.configure(text=error)
